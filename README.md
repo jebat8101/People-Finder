@@ -12,7 +12,7 @@
 
 **People-Search** is a lightweight, browser-based tool designed for **OSINT (Open Source Intelligence)** and **reconnaissance**. It helps penetration testers, security researchers, and ethical hackers generate targeted Google search queries (dorks) by combining a person's name with a clue (e.g., job title, location, company, or interest).
 
-Simply input the details, preview the dork, and click to search — all in one clean interface.
+Simply input the details, preview the dork, and click to search all in one clean interface.
 
 ** Use People Search:** [yogsec.github.io/People-Search](https://yogsec.github.io/People-Search/)
 
