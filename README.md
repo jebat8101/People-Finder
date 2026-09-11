@@ -50,7 +50,7 @@ It runs entirely in your browser. No accounts, no backend, and no personal data 
 | Reddit | `site:reddit.com "name" "clue"` |
 | Instagram | `site:instagram.com "name" "clue"` |
 | TikTok | `site:tiktok.com "name" "clue"` |
-| Threads | `site:threads.net "name" "clue"` |
+| Threads | `site:threads.com "name" "clue"` |
 | Google | `"name" "clue"` (no `site:` filter) |
 
 > **Note:** Results depend on what Google has indexed. LinkedIn and Reddit usually work better than Instagram, TikTok, or Threads.
