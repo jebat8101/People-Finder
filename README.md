@@ -14,7 +14,7 @@ A lightweight, browser-based **OSINT** tool that builds Google dorks to help you
 
 You enter:
 
-1. A **platform** (LinkedIn, Facebook, X, Reddit, Instagram, TikTok, or Google)
+1. A **platform** (LinkedIn, Facebook, X, Reddit, Instagram, TikTok, Threads, or Google)
 2. A person’s **name**
 3. A **clue** (job title, company, location, hobby, etc.)
 
@@ -34,7 +34,7 @@ It runs entirely in your browser. No accounts, no backend, and no personal data 
 
 | Function | Description |
 |----------|-------------|
-| **Platform picker** | Choose LinkedIn, Facebook, X, Reddit, Instagram, TikTok, or web-wide Google |
+| **Platform picker** | Choose LinkedIn, Facebook, X, Reddit, Instagram, TikTok, Threads, or web-wide Google |
 | **Dork builder** | Combines name + clue into a Google `site:` query |
 | **Live preview** | Updates the dork as you type or switch platforms |
 | **One-click search** | Opens Google with the generated query |
@@ -50,9 +50,10 @@ It runs entirely in your browser. No accounts, no backend, and no personal data 
 | Reddit | `site:reddit.com "name" "clue"` |
 | Instagram | `site:instagram.com "name" "clue"` |
 | TikTok | `site:tiktok.com "name" "clue"` |
+| Threads | `site:threads.net "name" "clue"` |
 | Google | `"name" "clue"` (no `site:` filter) |
 
-> **Note:** Results depend on what Google has indexed. LinkedIn and Reddit usually work better than Instagram or TikTok.
+> **Note:** Results depend on what Google has indexed. LinkedIn and Reddit usually work better than Instagram, TikTok, or Threads.
 
 ---
 
