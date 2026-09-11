@@ -58,7 +58,7 @@ People Finder is a static HTML app. You do not need Node.js, Python packages, or
 
 ### Option A — Open locally (fastest)
 
-1. Download or clone this project folder (`People-Search`).
+1. Download or clone this project folder (`People-Finder`).
 2. Open the folder in your file manager.
 3. Double-click `index.html` (or open it in Chrome / Firefox / Edge).
 
@@ -68,7 +68,7 @@ People Finder is a static HTML app. You do not need Node.js, Python packages, or
 2. Go to the project folder:
 
 ```bash
-cd /path/to/People-Search
+cd /path/to/People-Finder
 ```
 
 3. Start a simple HTTP server:
@@ -86,11 +86,11 @@ http://localhost:8080
 
 5. To stop the server, press `Ctrl + C` in the terminal.
 
-### Option C — Clone from Git (if using a Git remote)
+### Option C — Clone from Git
 
 ```bash
-git clone <your-repo-url>
-cd People-Search
+git clone https://github.com/jebat8101/People-Finder.git
+cd People-Finder
 python3 -m http.server 8080
 ```
 
