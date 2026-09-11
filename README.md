@@ -1,6 +1,10 @@
-# People Finder (Draft)
+# People Finder
 
 A lightweight, browser-based **OSINT** tool that builds Google dorks to help you find people online using a name, a clue, and a target platform.
+
+![People Finder](https://raw.githubusercontent.com/jebat8101/People-Finder/main/People%20Finder.png)
+
+**Repo:** [github.com/jebat8101/People-Finder](https://github.com/jebat8101/People-Finder)
 
 ---
 
@@ -141,11 +145,12 @@ site:linkedin.com "johndoe" "penetration tester"
 ## Project files
 
 ```text
-People-Search/
-├── index.html      # Main app
-├── logo.svg        # Brand logo
-├── README.md       # This file
-└── LICENSE         # License
+People-Finder/
+├── index.html           # Main app
+├── logo.svg             # Brand logo
+├── People Finder.png    # UI screenshot
+├── README.md            # This file
+└── LICENSE              # License
 ```
 
 ---
@@ -153,7 +158,3 @@ People-Search/
 ## License
 
 See [LICENSE](LICENSE).
-
----
-
-*Draft README — update repo URL and screenshots when ready to publish.*
