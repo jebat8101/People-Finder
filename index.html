@@ -297,6 +297,35 @@
       box-shadow: 0 12px 24px rgba(18, 52, 77, 0.25);
     }
 
+    .btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      align-items: center;
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.85);
+      color: #1a3c57;
+      border: 1px solid rgba(26, 60, 87, 0.28);
+      box-shadow: 0 4px 12px rgba(21, 56, 82, 0.1);
+    }
+
+    .btn-secondary:hover {
+      background: white;
+      color: #0f2d47;
+      border-color: rgba(26, 60, 87, 0.45);
+      box-shadow: 0 8px 18px rgba(18, 52, 77, 0.15);
+    }
+
+    .btn:disabled,
+    .btn-secondary:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      transform: none;
+      pointer-events: none;
+    }
+
     .btn:active {
       transform: scale(0.97);
     }
@@ -381,7 +410,7 @@
       <button type="button" class="platform-btn" role="radio" data-site="tiktok.com" aria-checked="false">
         <i class="fab fa-tiktok"></i> TikTok
       </button>
-      <button type="button" class="platform-btn" role="radio" data-site="threads.com" aria-checked="false">
+      <button type="button" class="platform-btn" role="radio" data-site="threads.net" aria-checked="false">
         <i class="fab fa-threads"></i> Threads
       </button>
       <button type="button" class="platform-btn" role="radio" data-site="" aria-checked="false">
@@ -425,9 +454,17 @@
       <i class="fas fa-code"></i> 
       <span id="dorkDisplay">site:linkedin.com "johndoe" "penetration tester"</span>
     </div>
-    <button class="btn" id="searchBtn">
-      <i class="fab fa-google"></i> Search with Dork
-    </button>
+    <div class="btn-group">
+      <button class="btn" id="searchBtn" type="button" title="Search selected platform only">
+        <i class="fab fa-google"></i> Search with Dork
+      </button>
+      <button class="btn btn-secondary" id="searchAllBtn" type="button" title="Opens one Google tab per platform">
+        <i class="fas fa-layer-group"></i> Search all platforms
+      </button>
+    </div>
+  </div>
+  <div class="hint" style="margin-top: 0.75rem;">
+    <i class="fas fa-info-circle"></i> <strong>Search with Dork</strong> = selected platform. <strong>Search all platforms</strong> = LinkedIn, Facebook, X, Reddit, Instagram, TikTok, Threads (allow pop-ups if blocked).
   </div>
 </div>
 
@@ -438,9 +475,21 @@
     const clueInput = document.getElementById('clueInput');
     const dorkDisplay = document.getElementById('dorkDisplay');
     const searchBtn = document.getElementById('searchBtn');
+    const searchAllBtn = document.getElementById('searchAllBtn');
     const platformButtons = document.querySelectorAll('.platform-btn');
 
     let selectedSite = 'linkedin.com';
+
+    // Site filters for "Search all platforms" (excludes plain Google web-wide)
+    const ALL_PLATFORM_SITES = [
+      'linkedin.com',
+      'facebook.com',
+      '(site:x.com OR site:twitter.com)',
+      'reddit.com',
+      'instagram.com',
+      'tiktok.com',
+      'threads.net',
+    ];
 
     // ---- helper: build google dork query ----
     function buildDork(name, clue, site) {
@@ -463,17 +512,37 @@
       return `${sitePrefix}"${cleanClue}"`.trim();
     }
 
+    function openGoogleSearch(dork) {
+      const googleUrl = `https://www.google.com/search?q=${encodeURIComponent(dork)}`;
+      window.open(googleUrl, '_blank');
+    }
+
     // ---- update preview ----
     function updateDorkPreview() {
       const dork = buildDork(nameInput.value, clueInput.value, selectedSite);
       dorkDisplay.textContent = dork;
     }
 
-    // ---- perform search (google) ----
+    // ---- perform search (selected platform only) ----
     function performSearch() {
       const dork = buildDork(nameInput.value, clueInput.value, selectedSite);
-      const googleUrl = `https://www.google.com/search?q=${encodeURIComponent(dork)}`;
-      window.open(googleUrl, '_blank');
+      openGoogleSearch(dork);
+    }
+
+    // ---- search all platforms (one Google tab each, sync to keep user gesture) ----
+    function searchAllPlatforms() {
+      const name = nameInput.value;
+      const clue = clueInput.value;
+      searchAllBtn.disabled = true;
+      try {
+        ALL_PLATFORM_SITES.forEach((site) => {
+          openGoogleSearch(buildDork(name, clue, site));
+        });
+      } finally {
+        setTimeout(() => {
+          searchAllBtn.disabled = false;
+        }, 1000);
+      }
     }
 
     // ---- platform selection ----
@@ -497,8 +566,9 @@
     // initial preview
     updateDorkPreview();
 
-    // search button
+    // search buttons
     searchBtn.addEventListener('click', performSearch);
+    searchAllBtn.addEventListener('click', searchAllPlatforms);
 
     // Enter key on inputs
     nameInput.addEventListener('keydown', (e) => {

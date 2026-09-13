@@ -24,7 +24,7 @@ People Finder then generates a Google search query (dork), such as:
 site:linkedin.com "johndoe" "penetration tester"
 ```
 
-Click **Search with Dork** to open that query on Google in a new tab.
+Click **Search with Dork** to open that query on Google in a new tab, or **Search all platforms** to open one tab per platform.
 
 It runs entirely in your browser. No accounts, no backend, and no personal data is stored.
 
@@ -37,7 +37,8 @@ It runs entirely in your browser. No accounts, no backend, and no personal data 
 | **Platform picker** | Choose LinkedIn, Facebook, X, Reddit, Instagram, TikTok, Threads, or web-wide Google |
 | **Dork builder** | Combines name + clue into a Google `site:` query |
 | **Live preview** | Updates the dork as you type or switch platforms |
-| **One-click search** | Opens Google with the generated query |
+| **One-click search** | Opens Google with the generated query (selected platform) |
+| **Search all platforms** | Opens one Google tab per platform (LinkedIn, Facebook, X, Reddit, Instagram, TikTok, Threads) |
 | **Privacy-first** | No API calls that send your inputs to a server; search happens on Google |
 
 ### Supported platforms
@@ -50,7 +51,7 @@ It runs entirely in your browser. No accounts, no backend, and no personal data 
 | Reddit | `site:reddit.com "name" "clue"` |
 | Instagram | `site:instagram.com "name" "clue"` |
 | TikTok | `site:tiktok.com "name" "clue"` |
-| Threads | `site:threads.com "name" "clue"` |
+| Threads | `site:threads.net "name" "clue"` |
 | Google | `"name" "clue"` (no `site:` filter) |
 
 > **Note:** Results depend on what Google has indexed. LinkedIn and Reddit usually work better than Instagram, TikTok, or Threads.
@@ -117,8 +118,8 @@ No extra dependencies to install.
 3. Enter the **Full name** (example: `johndoe`).
 4. Enter a **Clue / info** (example: `penetration tester`).
 5. Check the **live dork preview** under the form.
-6. Click **Search with Dork**.
-7. Review the Google results in the new tab.
+6. Click **Search with Dork** for the selected platform only, or **Search all platforms** to open one Google tab per platform.
+7. Review the Google results in the new tab(s). Allow pop-ups if the browser blocks multiple tabs.
 
 ### Example
 
