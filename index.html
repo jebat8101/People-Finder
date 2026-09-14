@@ -334,6 +334,115 @@
       font-size: 1.1rem;
     }
 
+    /* Gemini assist */
+    .gemini-panel {
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
+      padding: 1.1rem 1.25rem;
+      border-radius: 28px;
+      border: 1px solid rgba(30, 60, 92, 0.12);
+      background: rgba(255, 255, 255, 0.55);
+    }
+
+    .gemini-panel .panel-title {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+      color: #1a3347;
+      margin-bottom: 0.75rem;
+      font-size: 0.95rem;
+    }
+
+    .gemini-panel .panel-title i {
+      color: #2f648a;
+    }
+
+    .gemini-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      margin-top: 0.75rem;
+    }
+
+    .gemini-results {
+      margin-top: 1rem;
+      display: none;
+    }
+
+    .gemini-results.visible {
+      display: block;
+    }
+
+    .gemini-block {
+      margin-bottom: 0.85rem;
+    }
+
+    .gemini-block h4 {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #3d607c;
+      margin-bottom: 0.45rem;
+      font-weight: 650;
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+
+    .chip {
+      border: 1px solid rgba(26, 60, 87, 0.2);
+      background: white;
+      color: #1a3c57;
+      border-radius: 40px;
+      padding: 0.4rem 0.85rem;
+      font-size: 0.82rem;
+      cursor: pointer;
+      font-family: inherit;
+      transition: 0.15s;
+    }
+
+    .chip:hover {
+      background: #1a3c57;
+      color: white;
+      border-color: #1a3c57;
+    }
+
+    .gemini-tips {
+      font-size: 0.85rem;
+      color: #2c4d6b;
+      line-height: 1.45;
+      margin: 0;
+      padding-left: 1.1rem;
+    }
+
+    .gemini-tips li {
+      margin-bottom: 0.25rem;
+    }
+
+    .gemini-status {
+      margin-top: 0.65rem;
+      font-size: 0.8rem;
+      color: #3d607c;
+      min-height: 1.2em;
+    }
+
+    .gemini-status.error {
+      color: #9b2c2c;
+    }
+
+    .key-toggle {
+      background: transparent;
+      border: none;
+      color: #2f648a;
+      cursor: pointer;
+      padding: 0.8rem 1rem;
+      font-size: 1rem;
+    }
+
     /* responsive */
     @media (max-width: 600px) {
       .card {
@@ -379,11 +488,11 @@
   <div class="header">
     <img class="logo" src="logo.svg" alt="People Finder">
     <h1>People Finder</h1>
-    <span class="badge"><i class="fas fa-robot" style="margin-right: 6px;"></i> dork · v2</span>
+    <span class="badge"><i class="fas fa-robot" style="margin-right: 6px;"></i> dork · gemini</span>
   </div>
   <div class="sub">
     <i class="fas fa-arrow-trend-up"></i> 
-    <span>Build Google dorks · name + clue · pick a platform</span>
+    <span>Build Google dorks · name + clue · pick a platform · optional Gemini</span>
   </div>
 
   <!-- form -->
@@ -410,7 +519,7 @@
       <button type="button" class="platform-btn" role="radio" data-site="tiktok.com" aria-checked="false">
         <i class="fab fa-tiktok"></i> TikTok
       </button>
-      <button type="button" class="platform-btn" role="radio" data-site="threads.net" aria-checked="false">
+      <button type="button" class="platform-btn" role="radio" data-site="threads.com" aria-checked="false">
         <i class="fab fa-threads"></i> Threads
       </button>
       <button type="button" class="platform-btn" role="radio" data-site="" aria-checked="false">
@@ -448,6 +557,49 @@
     </div>
   </div>
 
+  <!-- Gemini assist (optional) -->
+  <div class="form-group gemini-panel">
+    <div class="panel-title">
+      <i class="fas fa-wand-magic-sparkles"></i>
+      Gemini assist <span style="font-weight:400;opacity:0.75;">(optional)</span>
+    </div>
+    <label for="geminiKeyInput">
+      <i class="fas fa-key"></i> Gemini API key
+    </label>
+    <div class="input-wrapper">
+      <input type="password" id="geminiKeyInput" placeholder="Paste API key from Google AI Studio" autocomplete="off">
+      <button type="button" class="key-toggle" id="geminiKeyToggle" title="Show / hide key" aria-label="Show or hide API key">
+        <i class="fas fa-eye"></i>
+      </button>
+    </div>
+    <div class="hint">
+      <i class="fas fa-info-circle"></i> Stored only in this browser (<code>localStorage</code>). Get a key at <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener noreferrer">Google AI Studio</a>. Name + clue are sent to Google when you click Suggest.
+    </div>
+    <div class="gemini-actions">
+      <button class="btn btn-secondary" id="geminiSuggestBtn" type="button" title="Ask Gemini for better clues and name variants">
+        <i class="fas fa-wand-magic-sparkles"></i> Suggest with Gemini
+      </button>
+      <button class="btn btn-secondary" id="geminiClearKeyBtn" type="button" title="Remove API key from this browser">
+        <i class="fas fa-trash"></i> Clear key
+      </button>
+    </div>
+    <div class="gemini-status" id="geminiStatus" aria-live="polite"></div>
+    <div class="gemini-results" id="geminiResults">
+      <div class="gemini-block" id="geminiCluesBlock">
+        <h4>Suggested clues</h4>
+        <div class="chip-row" id="geminiClues"></div>
+      </div>
+      <div class="gemini-block" id="geminiNamesBlock">
+        <h4>Name variations</h4>
+        <div class="chip-row" id="geminiNames"></div>
+      </div>
+      <div class="gemini-block" id="geminiTipsBlock">
+        <h4>Tips</h4>
+        <ul class="gemini-tips" id="geminiTips"></ul>
+      </div>
+    </div>
+  </div>
+
   <!-- dork preview & search -->
   <div class="action-row">
     <div class="dork-preview" id="dorkPreview">
@@ -477,8 +629,19 @@
     const searchBtn = document.getElementById('searchBtn');
     const searchAllBtn = document.getElementById('searchAllBtn');
     const platformButtons = document.querySelectorAll('.platform-btn');
+    const geminiKeyInput = document.getElementById('geminiKeyInput');
+    const geminiKeyToggle = document.getElementById('geminiKeyToggle');
+    const geminiSuggestBtn = document.getElementById('geminiSuggestBtn');
+    const geminiClearKeyBtn = document.getElementById('geminiClearKeyBtn');
+    const geminiStatus = document.getElementById('geminiStatus');
+    const geminiResults = document.getElementById('geminiResults');
+    const geminiClues = document.getElementById('geminiClues');
+    const geminiNames = document.getElementById('geminiNames');
+    const geminiTips = document.getElementById('geminiTips');
 
     let selectedSite = 'linkedin.com';
+    const GEMINI_KEY_STORAGE = 'peopleFinder.geminiApiKey';
+    const GEMINI_MODEL = 'gemini-3.5-flash';
 
     // Site filters for "Search all platforms" (excludes plain Google web-wide)
     const ALL_PLATFORM_SITES = [
@@ -569,6 +732,165 @@
     // search buttons
     searchBtn.addEventListener('click', performSearch);
     searchAllBtn.addEventListener('click', searchAllPlatforms);
+
+    // ---- Gemini assist ----
+    function platformLabel() {
+      const active = document.querySelector('.platform-btn.active');
+      return active ? active.textContent.trim() : 'Google';
+    }
+
+    function setGeminiStatus(message, isError) {
+      geminiStatus.textContent = message || '';
+      geminiStatus.classList.toggle('error', Boolean(isError));
+    }
+
+    function renderChips(container, items, onPick) {
+      container.innerHTML = '';
+      (items || []).forEach((item) => {
+        const text = String(item).trim();
+        if (!text) return;
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'chip';
+        btn.textContent = text;
+        btn.addEventListener('click', () => onPick(text));
+        container.appendChild(btn);
+      });
+    }
+
+    function renderGeminiSuggestions(data) {
+      const clues = data.clues || [];
+      const names = data.nameVariations || [];
+      const tips = data.tips || [];
+
+      renderChips(geminiClues, clues, (clue) => {
+        clueInput.value = clue;
+        updateDorkPreview();
+        updateArrowActive();
+        setGeminiStatus(`Applied clue: ${clue}`);
+      });
+      renderChips(geminiNames, names, (name) => {
+        nameInput.value = name;
+        updateDorkPreview();
+        updateArrowActive();
+        setGeminiStatus(`Applied name: ${name}`);
+      });
+      geminiTips.innerHTML = '';
+      tips.forEach((tip) => {
+        const li = document.createElement('li');
+        li.textContent = String(tip).trim();
+        if (li.textContent) geminiTips.appendChild(li);
+      });
+
+      document.getElementById('geminiCluesBlock').style.display = clues.length ? '' : 'none';
+      document.getElementById('geminiNamesBlock').style.display = names.length ? '' : 'none';
+      document.getElementById('geminiTipsBlock').style.display = tips.length ? '' : 'none';
+      geminiResults.classList.add('visible');
+    }
+
+    function extractGeminiText(payload) {
+      const parts = payload?.candidates?.[0]?.content?.parts || [];
+      return parts.map((p) => p.text || '').join('').trim();
+    }
+
+    function parseGeminiJson(text) {
+      const cleaned = text.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '').trim();
+      return JSON.parse(cleaned);
+    }
+
+    async function suggestWithGemini() {
+      const apiKey = geminiKeyInput.value.trim();
+      if (!apiKey) {
+        setGeminiStatus('Add a Gemini API key first.', true);
+        geminiKeyInput.focus();
+        return;
+      }
+
+      const name = nameInput.value.trim();
+      const clue = clueInput.value.trim();
+      if (!name && !clue) {
+        setGeminiStatus('Enter a name and/or clue before asking Gemini.', true);
+        return;
+      }
+
+      localStorage.setItem(GEMINI_KEY_STORAGE, apiKey);
+      geminiSuggestBtn.disabled = true;
+      setGeminiStatus('Asking Gemini…');
+
+      const prompt = [
+        'You help build Google OSINT people-search dorks.',
+        'Return ONLY valid JSON with this shape:',
+        '{"clues":["..."],"nameVariations":["..."],"tips":["..."]}',
+        'Give 4-6 short searchable clues (job, company, city, school, username-style keywords).',
+        'Give 3-5 realistic name spelling / abbreviation variations.',
+        'Give 2-4 practical search tips for the selected platform.',
+        'Do not invent private facts. Keep strings concise for Google queries.',
+        `Platform: ${platformLabel()}`,
+        `Name: ${name || '(none)'}`,
+        `Clue: ${clue || '(none)'}`,
+        `Current dork: ${buildDork(name, clue, selectedSite)}`,
+      ].join('\n');
+
+      try {
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-goog-api-key': apiKey,
+          },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: {
+              temperature: 0.4,
+              responseMimeType: 'application/json',
+            },
+          }),
+        });
+
+        const payload = await res.json().catch(() => ({}));
+        if (!res.ok) {
+          const errMsg = payload?.error?.message || `Gemini request failed (${res.status})`;
+          throw new Error(errMsg);
+        }
+
+        const text = extractGeminiText(payload);
+        if (!text) throw new Error('Gemini returned an empty response.');
+        const data = parseGeminiJson(text);
+        renderGeminiSuggestions(data);
+        setGeminiStatus('Suggestions ready — click a chip to apply.');
+      } catch (err) {
+        setGeminiStatus(err.message || 'Gemini request failed.', true);
+      } finally {
+        geminiSuggestBtn.disabled = false;
+      }
+    }
+
+    // restore API key from localStorage
+    const savedKey = localStorage.getItem(GEMINI_KEY_STORAGE);
+    if (savedKey) geminiKeyInput.value = savedKey;
+
+    function syncGeminiKeyStorage() {
+      const key = geminiKeyInput.value.trim();
+      if (key) localStorage.setItem(GEMINI_KEY_STORAGE, key);
+      else localStorage.removeItem(GEMINI_KEY_STORAGE);
+    }
+
+    geminiKeyInput.addEventListener('change', syncGeminiKeyStorage);
+    geminiKeyInput.addEventListener('input', syncGeminiKeyStorage);
+
+    geminiKeyToggle.addEventListener('click', () => {
+      const show = geminiKeyInput.type === 'password';
+      geminiKeyInput.type = show ? 'text' : 'password';
+      geminiKeyToggle.innerHTML = show ? '<i class="fas fa-eye-slash"></i>' : '<i class="fas fa-eye"></i>';
+    });
+
+    geminiSuggestBtn.addEventListener('click', suggestWithGemini);
+    geminiClearKeyBtn.addEventListener('click', () => {
+      geminiKeyInput.value = '';
+      localStorage.removeItem(GEMINI_KEY_STORAGE);
+      setGeminiStatus('API key cleared from this browser.');
+    });
 
     // Enter key on inputs
     nameInput.addEventListener('keydown', (e) => {

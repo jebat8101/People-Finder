@@ -26,7 +26,9 @@ site:linkedin.com "johndoe" "penetration tester"
 
 Click **Search with Dork** to open that query on Google in a new tab, or **Search all platforms** to open one tab per platform.
 
-It runs entirely in your browser. No accounts, no backend, and no personal data is stored.
+Optional: paste a **Gemini API key** and click **Suggest with Gemini** for clue and name-variation ideas.
+
+It runs entirely in your browser. No accounts and no backend. Search happens on Google. If you use Gemini, name + clue are sent to Google’s Gemini API (key stays in your browser `localStorage`).
 
 ---
 
@@ -39,7 +41,8 @@ It runs entirely in your browser. No accounts, no backend, and no personal data 
 | **Live preview** | Updates the dork as you type or switch platforms |
 | **One-click search** | Opens Google with the generated query (selected platform) |
 | **Search all platforms** | Opens one Google tab per platform (LinkedIn, Facebook, X, Reddit, Instagram, TikTok, Threads) |
-| **Privacy-first** | No API calls that send your inputs to a server; search happens on Google |
+| **Gemini assist** | Optional Google Gemini suggestions for clues, name variations, and search tips |
+| **Privacy-first** | No backend of your own; Google search + optional Gemini API only when you ask |
 
 ### Supported platforms
 
@@ -118,8 +121,9 @@ No extra dependencies to install.
 3. Enter the **Full name** (example: `johndoe`).
 4. Enter a **Clue / info** (example: `penetration tester`).
 5. Check the **live dork preview** under the form.
-6. Click **Search with Dork** for the selected platform only, or **Search all platforms** to open one Google tab per platform.
-7. Review the Google results in the new tab(s). Allow pop-ups if the browser blocks multiple tabs.
+6. (Optional) Paste a **Gemini API key** from [Google AI Studio](https://aistudio.google.com/apikey), then click **Suggest with Gemini**. Click a suggestion chip to apply it.
+7. Click **Search with Dork** for the selected platform only, or **Search all platforms** to open one Google tab per platform.
+8. Review the Google results in the new tab(s). Allow pop-ups if the browser blocks multiple tabs.
 
 ### Example
 
@@ -141,6 +145,8 @@ site:linkedin.com "johndoe" "penetration tester"
 - Good clues: job title, company, city, school, username.
 - Start with **LinkedIn** or **Reddit** for stronger Google indexing.
 - Use **Google** (web-wide) when you do not want a `site:` filter.
+- Use **Suggest with Gemini** when you need more clue / name ideas (requires your own API key).
+- Restrict the key in [Google AI Studio](https://aistudio.google.com/apikey) (quotas / referrer) and use **Clear key** when finished on a shared machine.
 
 ---
 
