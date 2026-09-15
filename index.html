@@ -334,34 +334,6 @@
       font-size: 1.1rem;
     }
 
-    /* Popup-blocked fallback for Search all platforms */
-    .popup-fallback {
-      display: none;
-      margin-top: 0.85rem;
-      padding: 1rem 1.15rem;
-      border-radius: 22px;
-      border: 1px solid rgba(155, 44, 44, 0.22);
-      background: rgba(255, 247, 247, 0.9);
-    }
-
-    .popup-fallback.visible {
-      display: block;
-    }
-
-    .popup-fallback .fallback-title {
-      font-size: 0.9rem;
-      font-weight: 650;
-      color: #7a2424;
-      margin-bottom: 0.35rem;
-    }
-
-    .popup-fallback .fallback-hint {
-      font-size: 0.8rem;
-      color: #5c3a3a;
-      margin-bottom: 0.75rem;
-      line-height: 1.4;
-    }
-
     /* Gemini assist */
     .gemini-panel {
       margin-top: 0.5rem;
@@ -635,21 +607,10 @@
       <span id="dorkDisplay">site:linkedin.com "johndoe" "penetration tester"</span>
     </div>
     <div class="btn-group">
-      <button class="btn" id="searchBtn" type="button" title="Search selected platform only">
+      <button class="btn" id="searchBtn" type="button" title="Open Google with the generated dork">
         <i class="fab fa-google"></i> Search with Dork
       </button>
-      <button class="btn btn-secondary" id="searchAllBtn" type="button" title="Opens one Google tab per platform">
-        <i class="fas fa-layer-group"></i> Search all platforms
-      </button>
     </div>
-  </div>
-  <div class="hint" style="margin-top: 0.75rem;">
-    <i class="fas fa-info-circle"></i> <strong>Search with Dork</strong> = selected platform. <strong>Search all platforms</strong> = LinkedIn, Facebook, X, Reddit, Instagram, TikTok, Threads. If the browser blocks extra tabs, use the one-click links that appear below.
-  </div>
-  <div class="popup-fallback" id="popupFallback" aria-live="polite">
-    <div class="fallback-title"><i class="fas fa-triangle-exclamation"></i> Some tabs were blocked</div>
-    <div class="fallback-hint">Click each platform below (one click = one tab). Or allow pop-ups for this page and try again.</div>
-    <div class="chip-row" id="popupFallbackLinks"></div>
   </div>
 </div>
 
@@ -660,10 +621,7 @@
     const clueInput = document.getElementById('clueInput');
     const dorkDisplay = document.getElementById('dorkDisplay');
     const searchBtn = document.getElementById('searchBtn');
-    const searchAllBtn = document.getElementById('searchAllBtn');
     const platformButtons = document.querySelectorAll('.platform-btn');
-    const popupFallback = document.getElementById('popupFallback');
-    const popupFallbackLinks = document.getElementById('popupFallbackLinks');
     const geminiKeyInput = document.getElementById('geminiKeyInput');
     const geminiKeyToggle = document.getElementById('geminiKeyToggle');
     const geminiSuggestBtn = document.getElementById('geminiSuggestBtn');
@@ -677,17 +635,6 @@
     let selectedSite = 'linkedin.com';
     const GEMINI_KEY_STORAGE = 'peopleFinder.geminiApiKey';
     const GEMINI_MODEL = 'gemini-3.5-flash';
-
-    // Site filters for "Search all platforms" (excludes plain Google web-wide)
-    const ALL_PLATFORMS = [
-      { label: 'LinkedIn', site: 'linkedin.com' },
-      { label: 'Facebook', site: 'facebook.com' },
-      { label: 'X', site: '(site:x.com OR site:twitter.com)' },
-      { label: 'Reddit', site: 'reddit.com' },
-      { label: 'Instagram', site: 'instagram.com' },
-      { label: 'TikTok', site: 'tiktok.com' },
-      { label: 'Threads', site: 'threads.com' },
-    ];
 
     // ---- helper: build google dork query ----
     function buildDork(name, clue, site) {
@@ -710,37 +657,9 @@
       return `${sitePrefix}"${cleanClue}"`.trim();
     }
 
-    function googleSearchUrl(dork) {
-      return `https://www.google.com/search?q=${encodeURIComponent(dork)}`;
-    }
-
     function openGoogleSearch(dork) {
-      return window.open(googleSearchUrl(dork), '_blank');
-    }
-
-    function hidePopupFallback() {
-      popupFallback.classList.remove('visible');
-      popupFallbackLinks.innerHTML = '';
-    }
-
-    function showPopupFallback(blocked) {
-      popupFallbackLinks.innerHTML = '';
-      blocked.forEach(({ label, url }) => {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'chip';
-        btn.textContent = label;
-        btn.title = `Open ${label} search`;
-        btn.addEventListener('click', () => {
-          const win = window.open(url, '_blank');
-          if (win) {
-            btn.remove();
-            if (!popupFallbackLinks.children.length) hidePopupFallback();
-          }
-        });
-        popupFallbackLinks.appendChild(btn);
-      });
-      popupFallback.classList.add('visible');
+      const googleUrl = `https://www.google.com/search?q=${encodeURIComponent(dork)}`;
+      window.open(googleUrl, '_blank');
     }
 
     // ---- update preview ----
@@ -749,56 +668,10 @@
       dorkDisplay.textContent = dork;
     }
 
-    // ---- perform search (selected platform only) ----
+    // ---- perform search ----
     function performSearch() {
       const dork = buildDork(nameInput.value, clueInput.value, selectedSite);
       openGoogleSearch(dork);
-    }
-
-    // ---- search all platforms ----
-    // Open blank tabs synchronously (keeps user gesture), then navigate.
-    // Any blocked tabs get one-click fallback chips (each click is a new gesture).
-    function searchAllPlatforms() {
-      const name = nameInput.value;
-      const clue = clueInput.value;
-      hidePopupFallback();
-      searchAllBtn.disabled = true;
-
-      const targets = ALL_PLATFORMS.map((p) => ({
-        label: p.label,
-        url: googleSearchUrl(buildDork(name, clue, p.site)),
-      }));
-
-      // Phase 1: reserve tabs while still in the click gesture
-      const reserved = targets.map(() => {
-        try {
-          return window.open('about:blank', '_blank');
-        } catch (e) {
-          return null;
-        }
-      });
-
-      // Phase 2: point reserved tabs at Google; collect blockers
-      const blocked = [];
-      reserved.forEach((win, i) => {
-        const target = targets[i];
-        if (win) {
-          try {
-            win.location.href = target.url;
-          } catch (e) {
-            try { win.close(); } catch (_) { /* ignore */ }
-            blocked.push(target);
-          }
-        } else {
-          blocked.push(target);
-        }
-      });
-
-      if (blocked.length) showPopupFallback(blocked);
-
-      setTimeout(() => {
-        searchAllBtn.disabled = false;
-      }, 800);
     }
 
     // ---- platform selection ----
@@ -824,7 +697,6 @@
 
     // search buttons
     searchBtn.addEventListener('click', performSearch);
-    searchAllBtn.addEventListener('click', searchAllPlatforms);
 
     // ---- Gemini assist ----
     function platformLabel() {

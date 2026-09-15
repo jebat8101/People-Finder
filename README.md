@@ -24,7 +24,7 @@ People Finder then generates a Google search query (dork), such as:
 site:linkedin.com "johndoe" "penetration tester"
 ```
 
-Click **Search with Dork** to open that query on Google in a new tab, or **Search all platforms** to open one tab per platform.
+Click **Search with Dork** to open that query on Google in a new tab.
 
 Optional: paste a **Gemini API key** and click **Suggest with Gemini** for clue and name-variation ideas.
 
@@ -40,7 +40,6 @@ It runs entirely in your browser. No accounts and no backend. Search happens on 
 | **Dork builder** | Combines name + clue into a Google `site:` query |
 | **Live preview** | Updates the dork as you type or switch platforms |
 | **One-click search** | Opens Google with the generated query (selected platform) |
-| **Search all platforms** | Opens one Google tab per platform; shows one-click links if the browser blocks extra tabs |
 | **Gemini assist** | Optional Google Gemini suggestions for clues, name variations, and search tips |
 | **Privacy-first** | No backend of your own; Google search + optional Gemini API only when you ask |
 
@@ -122,8 +121,8 @@ No extra dependencies to install.
 4. Enter a **Clue / info** (example: `penetration tester`).
 5. Check the **live dork preview** under the form.
 6. (Optional) Paste a **Gemini API key** from [Google AI Studio](https://aistudio.google.com/apikey), then click **Suggest with Gemini**. Click a suggestion chip to apply it.
-7. Click **Search with Dork** for the selected platform only, or **Search all platforms** to open one Google tab per platform.
-8. Review the Google results. If only one tab opens, click the platform chips that appear under the buttons (popup blocker fallback), or allow pop-ups for this page.
+7. Click **Search with Dork** to open Google with the generated query.
+8. Review the Google results in the new tab.
 
 ### Example
 
