@@ -40,7 +40,7 @@ It runs entirely in your browser. No accounts and no backend. Search happens on 
 | **Dork builder** | Combines name + clue into a Google `site:` query |
 | **Live preview** | Updates the dork as you type or switch platforms |
 | **One-click search** | Opens Google with the generated query (selected platform) |
-| **Search all platforms** | Opens one Google tab per platform (LinkedIn, Facebook, X, Reddit, Instagram, TikTok, Threads) |
+| **Search all platforms** | Opens one Google tab per platform; shows one-click links if the browser blocks extra tabs |
 | **Gemini assist** | Optional Google Gemini suggestions for clues, name variations, and search tips |
 | **Privacy-first** | No backend of your own; Google search + optional Gemini API only when you ask |
 
@@ -54,7 +54,7 @@ It runs entirely in your browser. No accounts and no backend. Search happens on 
 | Reddit | `site:reddit.com "name" "clue"` |
 | Instagram | `site:instagram.com "name" "clue"` |
 | TikTok | `site:tiktok.com "name" "clue"` |
-| Threads | `site:threads.net "name" "clue"` |
+| Threads | `site:threads.com "name" "clue"` |
 | Google | `"name" "clue"` (no `site:` filter) |
 
 > **Note:** Results depend on what Google has indexed. LinkedIn and Reddit usually work better than Instagram, TikTok, or Threads.
@@ -123,7 +123,7 @@ No extra dependencies to install.
 5. Check the **live dork preview** under the form.
 6. (Optional) Paste a **Gemini API key** from [Google AI Studio](https://aistudio.google.com/apikey), then click **Suggest with Gemini**. Click a suggestion chip to apply it.
 7. Click **Search with Dork** for the selected platform only, or **Search all platforms** to open one Google tab per platform.
-8. Review the Google results in the new tab(s). Allow pop-ups if the browser blocks multiple tabs.
+8. Review the Google results. If only one tab opens, click the platform chips that appear under the buttons (popup blocker fallback), or allow pop-ups for this page.
 
 ### Example
 
