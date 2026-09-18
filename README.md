@@ -28,7 +28,7 @@ Click **Search with Dork** to open that query on Google in a new tab.
 
 Optional: paste a **Gemini API key** and click **Suggest with Gemini** for clue and name-variation ideas.
 
-It runs entirely in your browser. No accounts and no backend. Search happens on Google. If you use Gemini, name + clue are sent to Google’s Gemini API (key stays in your browser `localStorage`).
+It runs as a static HTML page in your browser, or as a **Streamlit** app (`streamlit_app.py`) for [Streamlit Community Cloud](https://share.streamlit.io). Search happens on Google. If you use Gemini, name + clue are sent to Google’s Gemini API.
 
 ---
 
@@ -62,65 +62,58 @@ It runs entirely in your browser. No accounts and no backend. Search happens on 
 
 ## Installation (step by step)
 
-People Finder is a static HTML app. You do not need Node.js, Python packages, or a database.
-
-### Option A — Open locally (fastest)
+### Option A — Open HTML locally (fastest)
 
 1. Download or clone this project folder (`People-Finder`).
 2. Open the folder in your file manager.
 3. Double-click `index.html` (or open it in Chrome / Firefox / Edge).
 
-### Option B — Run with a local web server (recommended)
-
-1. Open a terminal.
-2. Go to the project folder:
+### Option B — HTML with a local web server
 
 ```bash
 cd /path/to/People-Finder
-```
-
-3. Start a simple HTTP server:
-
-```bash
-# Python 3
 python3 -m http.server 8080
 ```
 
-4. Open your browser and visit:
+Open `http://localhost:8080`.
 
-```text
-http://localhost:8080
-```
-
-5. To stop the server, press `Ctrl + C` in the terminal.
-
-### Option C — Clone from Git
+### Option C — Streamlit (local)
 
 ```bash
-git clone https://github.com/jebat8101/People-Finder.git
-cd People-Finder
-python3 -m http.server 8080
+cd /path/to/People-Finder
+pip install -r requirements.txt
+streamlit run streamlit_app.py
 ```
 
-Then open `http://localhost:8080`.
+### Option D — Deploy on Streamlit Community Cloud
+
+1. Push this repo to GitHub (already: [jebat8101/People-Finder](https://github.com/jebat8101/People-Finder)).
+2. Open [share.streamlit.io](https://share.streamlit.io) → **Create app**.
+3. Repository: `jebat8101/People-Finder`, Branch: `main`.
+4. **Main file path:** `streamlit_app.py`
+5. (Optional) **Advanced settings → Secrets:**
+
+```toml
+GEMINI_API_KEY = "your-key-here"
+```
+
+6. Click **Deploy**.
 
 ### Requirements
 
-- A modern web browser
-- (Optional) Python 3, or any static file server, if you use Option B/C
-
-No extra dependencies to install.
+- HTML: a modern web browser
+- Streamlit: Python 3.9+ and packages in `requirements.txt`
 
 ---
 
 ## How to Use
 
-1. Open People Finder in your browser (`index.html` or `http://localhost:8080`).
+1. Open People Finder (`index.html`, `http://localhost:8080`, or the Streamlit app).
 2. Select a **Platform** (default: LinkedIn).
 3. Enter the **Full name** (example: `johndoe`).
 4. Enter a **Clue / info** (example: `penetration tester`).
 5. Check the **live dork preview** under the form.
-6. (Optional) Paste a **Gemini API key** from [Google AI Studio](https://aistudio.google.com/apikey), then click **Suggest with Gemini**. Click a suggestion chip to apply it.
+6. (Optional) Paste a **Gemini API key** from [Google AI Studio](https://aistudio.google.com/apikey), or set `GEMINI_API_KEY` in Streamlit secrets, then click **Suggest with Gemini**. Click a suggestion chip to apply it.
 7. Click **Search with Dork** to open Google with the generated query.
 8. Review the Google results in the new tab.
 
@@ -153,7 +146,10 @@ site:linkedin.com "johndoe" "penetration tester"
 
 ```text
 People-Finder/
-├── index.html           # Main app
+├── streamlit_app.py     # Streamlit app (Cloud main file)
+├── requirements.txt     # Streamlit dependencies
+├── .streamlit/          # Theme / server config
+├── index.html           # Static HTML app
 ├── logo.svg             # Brand logo
 ├── People Finder.png    # UI screenshot
 ├── README.md            # This file
